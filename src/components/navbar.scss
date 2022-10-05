@@ -1,0 +1,207 @@
+// ========================
+// Navbar
+// ========================
+// Horizontal bar of items on tablet and up, or a toggleable menu that pops open from the side on mobile.
+// Requires quite a bit of markup, is always a pain to build.
+// One main navbar that's always visible, then either the desktop or mobile nav is visible based on screen width.
+// ========================
+// Example:
+//  {/* Mobile nav background overlay */}
+//  {(isMobileNavOpen) && (
+//    <div className="navbar__mobile-background" onClick={() => setIsMobileNavOpen(false)} />
+//  )}
+//
+//  <div className="navbar">
+//    <div className="navbar__container container">
+//      {/* Brand / Title - Visible on desktop AND mobile */}
+//      <div className="navbar__title">
+//        <Link href="/">
+//          <a className="navbar__item">My Website</a>
+//        </Link>
+//      </div>
+//
+//      {/* Desktop nav */}
+//      <nav className="navbar__desktop-nav">
+//        <ul className="navbar__desktop-nav__list">
+//          <li className="navbar__desktop-nav__list-item">
+//            <Link href="/">
+//              <a className={classNames("navbar__item", hasActiveClassName('/'))}>Home</a>
+//            </Link>
+//          </li>
+//          <li className="navbar__desktop-nav__list-item">
+//            <Link href="/about">
+//              <a className={classNames("navbar__item", hasActiveClassName('/about'))}>About</a>
+//            </Link>
+//          </li>
+//        </ul>
+//      </nav> {/* .navbar__desktop-nav */}
+//
+//      {/* Sandwich button for opening mobile nav */}
+//      <button className="navbar__sandwich-button"
+//        aria-label="menu"
+//        aria-expanded={isMobileNavOpen}
+//        aria-controls="mobile-nav"
+//        tabIndex={0}
+//        onClick={() => setIsMobileNavOpen(!isMobileNavOpen)}
+//      >
+//        <MenuIcon size={20} />
+//      </button>
+//    </div> {/* .navbar__container */}
+//
+//    {/* Mobile nav */}
+//    <nav
+//      id="mobile-nav"
+//      className={classNames("navbar__mobile-nav", { 'is-open': isMobileNavOpen })}
+//    >
+//      <ul className="navbar__mobile-nav__list">
+//        <li className="navbar__mobile-nav__list-item">
+//          <Link href="/">
+//            <a className={classNames("navbar__item", hasActiveClassName('/'))}>Home</a>
+//          </Link>
+//        </li>
+//        <li className="navbar__mobile-nav__list-item">
+//          <Link href="/about">
+//            <a className={classNames("navbar__item", hasActiveClassName('/about'))}>About</a>
+//          </Link>
+//        </li>
+//      </ul>
+//    </nav> {/* .navbar__mobile-nav */}
+//  </div> {/* .navbar */}
+
+.navbar {
+  width: 100%;
+  height: 80px;
+  position: relative;
+  background-color: $primary;
+  z-index: 20;
+}
+
+
+// ========================
+// ELEMENTS
+// ========================
+/* Content within the container including title, desktop nav, and sandwich button */
+.navbar__container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+
+  @include media-query("tablet") {
+    justify-content: start;
+  }
+}
+
+/* Items within navbar; desktop nav or mobile nav */
+.navbar__item {
+  text-decoration: none;
+  margin: 0;
+
+  &.is-active {
+    border-bottom: 1px solid $link;
+  }
+}
+
+/* "Brand" text - title */
+.navbar__title {
+  @extend %h1;
+  margin: 0;
+}
+
+/*
+ * "Sandwich button" for toggle mobile nav.
+ * Only visible on mobile.
+ */
+.navbar__sandwich-button {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: $link;
+  cursor: pointer;
+
+  @include media-query("tablet") {
+    display: none;
+  }
+}
+
+/* Gray background for dimming the page when nav is open */
+.navbar__mobile-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  cursor: initial;
+  z-index: 10;
+
+  background-color: rgba(black, 0.5);
+  cursor: pointer;
+
+  @include media-query("tablet") {
+    display: none;
+  }
+}
+
+/* Desktop nav */
+.navbar__desktop-nav {
+  display: none;
+
+  @include media-query("tablet") {
+    display: block;
+  }
+}
+.navbar__desktop-nav__list {
+  display: flex;
+  flex-direction: row;
+}
+.navbar__desktop-nav__list-item {
+  @extend %h3;
+  font-weight: $font-weight-regular;
+  margin: 0;
+  margin-right: $m * 2;
+  list-style: none;
+}
+
+/* Mobile nav */
+.navbar__mobile-nav {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: white;
+  height: calc(100vh - 100%);
+  min-width: 200px;
+  max-width: 80vw;
+  padding: 2 * $m;
+  transform: translateX(-100%);
+  transition: transform 0.2s ease-out;
+
+  @include media-query("tablet") {
+    display: none;
+  }
+
+  &.is-open {
+    transform: none;
+  }
+}
+.navbar__mobile-nav__list {
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+.navbar__mobile-nav__list-item {
+  @extend %h3;
+  font-weight: $font-weight-regular;
+  margin: 0;
+  margin-bottom: $m * 2;
+  list-style: none;
+}
+
+
+// ========================
+// MODIFIERS
+// ========================
+
+/* None! */
